@@ -1,0 +1,8 @@
+C:\Users\mathe\OneDrive\Documentos\Projetos\Zoo\ZooApi\obj\Debug\net9.0\ZooApi.csproj.AssemblyReference.cache
+C:\Users\mathe\OneDrive\Documentos\Projetos\Zoo\ZooApi\obj\Debug\net9.0\rpswa.dswa.cache.json
+C:\Users\mathe\OneDrive\Documentos\Projetos\Zoo\ZooApi\obj\Debug\net9.0\ZooApi.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\mathe\OneDrive\Documentos\Projetos\Zoo\ZooApi\obj\Debug\net9.0\ZooApi.AssemblyInfoInputs.cache
+C:\Users\mathe\OneDrive\Documentos\Projetos\Zoo\ZooApi\obj\Debug\net9.0\ZooApi.AssemblyInfo.cs
+C:\Users\mathe\OneDrive\Documentos\Projetos\Zoo\ZooApi\obj\Debug\net9.0\ZooApi.csproj.CoreCompileInputs.cache
+C:\Users\mathe\OneDrive\Documentos\Projetos\Zoo\ZooApi\obj\Debug\net9.0\ZooApi.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\mathe\OneDrive\Documentos\Projetos\Zoo\ZooApi\obj\Debug\net9.0\ZooApi.MvcApplicationPartsAssemblyInfo.cache
