@@ -3,7 +3,8 @@ import { getAnimais, createAnimal } from "../services/api";
 import maisIcon from "../assets/icons/mais.png";
 import FecharIcon from "../assets/icons/cruz.png";
 
-function AnimaisPage({ onVerMais }) {
+function AnimaisPage({ onVerMais, successMessage, setSuccessMessage }) {
+
   const [animais, setAnimais] = useState([]);
   const [mostrarForm, setMostrarForm] = useState(false);
   const [form, setForm] = useState({
@@ -15,6 +16,7 @@ function AnimaisPage({ onVerMais }) {
     paisOrigem: "",
   });
   const [erro, setErro] = useState("");
+  const [sucesso, setSucesso] = useState("");
 
   const [busca, setBusca] = useState("");
 
@@ -33,6 +35,15 @@ function AnimaisPage({ onVerMais }) {
     carregarAnimais();
   }, []);
 
+  useEffect(() => {
+  if (successMessage) {
+    setSucesso(successMessage);
+    if (typeof setSuccessMessage === "function") {
+      setSuccessMessage("");
+    }
+  }
+}, [successMessage, setSuccessMessage]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -49,22 +60,36 @@ function AnimaisPage({ onVerMais }) {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setErro("");
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setErro("");
+  setSucesso("");
 
-    const payload = { ...form };
+  const nomeTrim = form.nome.trim();
 
-    try {
-      await createAnimal(payload);
-      limparFormulario();
-      setMostrarForm(false);
-      carregarAnimais();
-    } catch (e) {
-      console.error(e);
-      setErro("Erro ao salvar animal.");
-    }
+  if (nomeTrim.length < 4) {
+    setErro("O nome do animal deve ter pelo menos 4 caracteres.");
+    return;
+  }
+
+  const payload = {
+    ...form,
+    nome: nomeTrim,
   };
+
+  try {
+    await createAnimal(payload);
+    setSucesso("Animal cadastrado com sucesso.");
+    limparFormulario();
+    setMostrarForm(false);
+    carregarAnimais();
+  } catch (e) {
+    console.error(e);
+    setErro("Erro ao salvar animal.");
+  }
+};
+
+
 
   // 🔍 Filtro único: procura em nome, espécie, habitat e país
   const animaisFiltrados = animais.filter((a) => {
@@ -88,6 +113,7 @@ function AnimaisPage({ onVerMais }) {
     <div className="section">
       <h1>Animais</h1>
 
+      {sucesso && <p className="success">{sucesso}</p>}
       {erro && <p className="error">{erro}</p>}
 
       <div className="top-actions">

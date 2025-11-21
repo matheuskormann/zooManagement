@@ -10,15 +10,19 @@ function App() {
   const [pagina, setPagina] = useState("home"); // home | animais | cuidados | animalDetalhe
   const [animalSelecionado, setAnimalSelecionado] = useState(null);
 
+  const [animalSuccessMessage, setAnimalSuccessMessage] = useState("");
+
   const irParaHome = () => {
     setPagina("home");
     setAnimalSelecionado(null);
   };
 
   const irParaAnimais = () => {
-    setPagina("animais");
-    setAnimalSelecionado(null);
-  };
+  setPagina("animais");
+  setAnimalSelecionado(null);
+  setAnimalSuccessMessage("");
+};
+
 
   const irParaCuidados = () => {
     setPagina("cuidados");
@@ -30,23 +34,42 @@ function App() {
     setPagina("animalDetalhe");
   };
 
-  let conteudo;
-  if (pagina === "home") {
-    conteudo = <HomePage />;
-  } else if (pagina === "animais") {
-    conteudo = <AnimaisPage onVerMais={handleVerMaisAnimal} />;
-  } else if (pagina === "cuidados") {
-    conteudo = <CuidadosPage />;
-  } else if (pagina === "animalDetalhe" && animalSelecionado) {
-    conteudo = (
-      <AnimalDetalhePage
-        animalInicial={animalSelecionado}
-        voltar={() => setPagina("animais")}
-      />
-    );
-  } else {
-    conteudo = <HomePage />;
-  }
+  const handleAnimalDeleted = (nomeAnimal) => {
+  setPagina("animais");
+  setAnimalSelecionado(null);
+  setAnimalSuccessMessage(`O animal "${nomeAnimal}" foi excluído com sucesso.`);
+};
+
+
+
+let conteudo;
+if (pagina === "home") {
+  conteudo = <HomePage />;
+} else if (pagina === "animais") {
+  conteudo = (
+    <AnimaisPage
+      onVerMais={handleVerMaisAnimal}
+      successMessage={animalSuccessMessage}
+      setSuccessMessage={setAnimalSuccessMessage}
+    />
+  );
+} else if (pagina === "cuidados") {
+  conteudo = <CuidadosPage />;
+} else if (pagina === "animalDetalhe" && animalSelecionado) {
+  conteudo = (
+    <AnimalDetalhePage
+      animalInicial={animalSelecionado}
+      voltar={() => {
+        setPagina("animais");
+        setAnimalSelecionado(null);
+      }}
+      onDeleted={handleAnimalDeleted}
+    />
+  );
+} else {
+  conteudo = <HomePage />;
+}
+
 
   return (
     <div>

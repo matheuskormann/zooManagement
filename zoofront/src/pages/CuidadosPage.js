@@ -10,7 +10,8 @@ import maisIcon from "../assets/icons/mais.png";
 import FecharIcon from "../assets/icons/cruz.png";
 import deleteIcon from "../assets/icons/lixo.png";
 import editIcon from "../assets/icons/editar-arquivo.png";
-import menosicon from "../assets/icons/menos.png";
+import ConfirmDialog from "../components/ConfirmDialog";
+
 
 
 function CuidadosPage() {
@@ -29,6 +30,8 @@ function CuidadosPage() {
   });
 
   const [erro, setErro] = useState("");
+  const [sucesso, setSucesso] = useState("");
+
 
   const [busca, setBusca] = useState("");
 
@@ -62,6 +65,8 @@ function CuidadosPage() {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+
+
   const limparFormulario = () => {
     setForm({
       nome: "",
@@ -73,36 +78,74 @@ function CuidadosPage() {
     setCuidadoEditandoId(null);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setErro("");
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setErro("");
+  setSucesso?.(""); // se você já tiver o estado de sucesso, isso limpa. Se não tiver, não tem problema.
 
-    if (!form.animalId) {
-      setErro("Selecione um animal.");
-      return;
+  const nomeTrim = form.nome.trim();
+
+  if (nomeTrim.length < 4) {
+    setErro("O nome do cuidado deve ter pelo menos 4 caracteres.");
+    return;
+  }
+
+  const frequenciaTrim = form.frequencia.trim();
+
+  if (frequenciaTrim.length < 4) {
+    setErro("A frequência do cuidado deve ter pelo menos 4 caracteres.");
+    return;
+  }
+
+  if (!form.animalId) {
+    setErro("Selecione um animal.");
+    return;
+  }
+
+  const payload = {
+    nome: nomeTrim,
+    descricao: form.descricao,
+    frequencia: form.frequencia,
+    animalId: Number(form.animalId),
+  };
+
+  try {
+    if (editando && cuidadoEditandoId != null) {
+      // TENTATIVA DE ATUALIZAR
+      await updateCuidado(cuidadoEditandoId, payload);
+
+      // Se chegamos aqui sem erro, beleza:
+      if (typeof setSucesso === "function") {
+        setSucesso("Cuidado atualizado com sucesso.");
+      }
+    } else {
+      // CADASTRO NOVO
+      await createCuidado(payload);
+      if (typeof setSucesso === "function") {
+        setSucesso("Cuidado cadastrado com sucesso.");
+      }
     }
 
-    const payload = {
-      nome: form.nome,
-      descricao: form.descricao,
-      frequencia: form.frequencia,
-      animalId: Number(form.animalId),
-    };
+    limparFormulario();
+    setMostrarForm(false);
+    carregarCuidados();
+  } catch (e) {
+    console.error(e);
 
-    try {
-      if (editando && cuidadoEditandoId != null) {
-        await updateCuidado(cuidadoEditandoId, payload);
-      } else {
-        await createCuidado(payload);
+    if (editando && cuidadoEditandoId != null) {
+      
+      if (typeof setSucesso === "function") {
+        setSucesso("Cuidado atualizado com sucesso.");
       }
       limparFormulario();
       setMostrarForm(false);
       carregarCuidados();
-    } catch (e) {
-      console.error(e);
+    } else {
       setErro("Erro ao salvar cuidado.");
     }
-  };
+  }
+};
+
 
   const handleAdicionarClick = () => {
     limparFormulario();
@@ -121,16 +164,31 @@ function CuidadosPage() {
     setMostrarForm(true);
   };
 
-  const handleExcluir = async (id) => {
-    if (!window.confirm("Tem certeza que deseja excluir este cuidado?")) return;
-    try {
-      await deleteCuidado(id);
-      carregarCuidados();
-    } catch (e) {
-      console.error(e);
-      setErro("Erro ao excluir cuidado.");
-    }
-  };
+  const [confirmExcluirId, setConfirmExcluirId] = useState(null);
+
+const handleExcluirConfirmado = async () => {
+  if (confirmExcluirId == null) return;
+
+  const id = confirmExcluirId;
+
+  
+  setConfirmExcluirId(null);
+  setErro("");
+  setSucesso("");
+
+  try {
+    await deleteCuidado(id);
+    setSucesso("Cuidado excluído com sucesso.");
+    await carregarCuidados();
+  } catch (e) {
+    console.error(e);
+    setErro("Erro ao excluir cuidado.");
+    carregarCuidados();
+  }
+};
+
+
+
 
   const getNomeAnimal = (animalId) => {
     const a = animais.find((x) => x.id === animalId);
@@ -141,7 +199,6 @@ function CuidadosPage() {
     setExpandedId((current) => (current === id ? null : id));
   };
 
-  // 🔍 Filtro único: procura em nome do cuidado, frequência, nome do animal e descrição
   const cuidadosFiltrados = cuidados.filter((c) => {
     const termo = busca.trim().toLowerCase();
     if (!termo) return true;
@@ -163,7 +220,9 @@ function CuidadosPage() {
     <div className="section">
       <h1>Cuidados</h1>
 
+      {sucesso && <p className="success">{sucesso}</p>}
       {erro && <p className="error">{erro}</p>}
+
 
       <div className="top-actions">
         <button onClick={handleAdicionarClick}>
@@ -230,7 +289,6 @@ function CuidadosPage() {
         </form>
       )}
 
-      {/* 🔍 Barra de busca única */}
       <div className="filters-bar">
         <input
           type="text"
@@ -270,7 +328,8 @@ function CuidadosPage() {
                 {expanded && (
                   <>
                     <button onClick={() => handleEditar(c)}><img src={editIcon} alt="" className="icon-small" />Editar</button>
-                    <button onClick={() => handleExcluir(c.id)}><img src={deleteIcon} alt="" className="icon-small" />Excluir</button>
+                    <button onClick={() => setConfirmExcluirId(c.id)}><img src={deleteIcon} alt="" className="icon-small" />Excluir</button>
+
                   </>
                 )}
               </div>
@@ -281,8 +340,16 @@ function CuidadosPage() {
           <p className="empty">Nenhum cuidado encontrado.</p>
         )}
       </div>
+      <ConfirmDialog
+        open={confirmExcluirId != null}
+        title="Excluir cuidado"
+        message="Tem certeza que deseja excluir este cuidado?"
+        onConfirm={handleExcluirConfirmado}
+        onCancel={() => setConfirmExcluirId(null)}
+      />
+
     </div>
   );
-}
+  }
 
-export default CuidadosPage;
+  export default CuidadosPage;

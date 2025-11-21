@@ -143,3 +143,4 @@ C:\Users\mathe\OneDrive\Documentos\Projetos\Zoo\ZooApi\obj\Debug\net8.0\refint\Z
 C:\Users\mathe\OneDrive\Documentos\Projetos\Zoo\ZooApi\obj\Debug\net8.0\ZooApi.pdb
 C:\Users\mathe\OneDrive\Documentos\Projetos\Zoo\ZooApi\obj\Debug\net8.0\ZooApi.genruntimeconfig.cache
 C:\Users\mathe\OneDrive\Documentos\Projetos\Zoo\ZooApi\obj\Debug\net8.0\ref\ZooApi.dll
+C:\Users\mathe\OneDrive\Documentos\Projetos\Zoo\ZooApi\obj\Debug\net8.0\ZooApi.sourcelink.json

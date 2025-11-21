@@ -26,7 +26,7 @@ namespace ZooApi.Controllers
         public async Task<ActionResult<AnimalDto>> GetById(int id)
         {
             var animal = await _animalService.GetByIdAsync(id);
-            if (animal == null) return NotFound();
+            if (animal == null) return NotFound("Animal not found");
             return Ok(animal);
         }
 
@@ -41,16 +41,16 @@ namespace ZooApi.Controllers
         public async Task<IActionResult> Put(int id, [FromBody] AnimalCreateUpdateDto dto)
         {
             var ok = await _animalService.UpdateAsync(id, dto);
-            if (!ok) return NotFound();
-            return NoContent();
+            if (!ok) return NotFound("Animal not found");
+            return Ok("Animal updated successfully");
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var ok = await _animalService.DeleteAsync(id);
-            if (!ok) return NotFound();
-            return NoContent();
+            if (!ok) return NotFound("Animal not found");
+            return Ok("Animal deleted successfully");
         }
     }
 }

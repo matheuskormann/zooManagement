@@ -41,16 +41,16 @@ namespace ZooApi.Controllers
         public async Task<IActionResult> Put(int id, [FromBody] CuidadoCreateUpdateDto dto)
         {
             var ok = await _cuidadoService.UpdateAsync(id, dto);
-            if (!ok) return NotFound();
-            return NoContent();
+            if (!ok) return NotFound("Cuidado not found");
+            return Ok("Cuidado updated successfully");
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var ok = await _cuidadoService.DeleteAsync(id);
-            if (!ok) return NotFound();
-            return NoContent();
+            if (!ok) return NotFound("Cuidado not found");
+            return Ok("Cuidado deleted successfully");
         }
     }
 }
