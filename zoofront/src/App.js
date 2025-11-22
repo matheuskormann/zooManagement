@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
+import logo from "./assets/logoZooSemFundo.png";
 
 import HomePage from "./pages/HomePage";
 import AnimaisPage from "./pages/AnimaisPage";
@@ -74,7 +75,8 @@ if (pagina === "home") {
   return (
     <div>
       <header className="navbar">
-        <div className="navbar-brand">Zoo Manager</div>
+
+        <div className="navbar-brand"><img src={logo} alt="Logo do Zoo" className="navbar-logo" />Zoo Manager</div>
         <nav className="navbar-links">
           <button
             className={pagina === "home" ? "nav-active" : ""}

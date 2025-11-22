@@ -17,6 +17,8 @@ body {
 .navbar-brand {
   font-weight: 600;
   font-size: 1.1rem;
+
+  
 }
 
 .navbar-links button {
@@ -229,13 +231,13 @@ h2, h3, h4 {
 }
 
 .card-actions button:nth-of-type(2) {
-  background: #0288d1;
-  color: #fff;
+  background: #00a6ff;
+  color: #000000;
 }
 
 .card-actions button:nth-of-type(3) {
-  background: #e53935;
-  color: #fff;
+  background: hsl(1, 100%, 50%);
+  color: #000000;
 }
 
 /* DETALHE DO ANIMAL */
@@ -267,8 +269,8 @@ h2, h3, h4 {
 }
 
 .animal-detalhe-actions button:nth-of-type(1) {
-  background: #0288d1;
-  color: #fff;
+  background: #00a6ff;
+  color: #000000;
   border: none;
   padding: 8px 12px;
   border-radius: 4px;
@@ -276,8 +278,8 @@ h2, h3, h4 {
 }
 
 .animal-detalhe-actions button:nth-of-type(2) {
-  background: #e53935;
-  color: #fff;
+  background: #ff0400;
+  color: #000000;
   border: none;
   padding: 8px 12px;
   border-radius: 4px;
@@ -310,7 +312,7 @@ h2, h3, h4 {
   margin-bottom: 10px;
   font-size: 0.9rem;
 }
-  
+
 
 /* RESPONSIVO */
 
@@ -407,3 +409,70 @@ h2, h3, h4 {
   color: #fff;
 }
 
+.home-intro {
+  margin-bottom: 16px;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+/* cards grandes de estatística */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  background: #f7f7f7;
+  border-radius: 8px;
+  padding: 12px 14px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.stat-card h3 {
+  margin: 0 0 6px 0;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.stat-number {
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+
+/* box com listas (espécie / habitat) */
+.stats-detail {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.stats-box {
+  background: #fafafa;
+  border-radius: 8px;
+  padding: 12px 14px;
+  border: 1px solid #eee;
+}
+
+.stats-box h3 {
+  margin-top: 0;
+  font-size: 1rem;
+}
+
+.stats-box ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 8px 0 0 0;
+}
+
+.stats-box li {
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+}
+.navbar-logo {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
